@@ -41,8 +41,8 @@ and clone with `git@github.com:redxz5/raspi-apps.git` instead.
   in `apps/homepage/config/services.yaml`.
 - **Remove an app:** delete its directory (or add a `disabled` file) and push.
   Its data under `DATA_ROOT` is kept.
-- **After a reboot:** `sudo secure-usb unlock` (asks the passphrase) to mount the encrypted
-  USB and start Nextcloud. Other apps start on their own. `sudo secure-usb lock` before unplugging.
+- **Encrypted USB (if set up):** after a reboot run `sudo secure-usb unlock` (asks the passphrase)
+  to mount it and start apps that need it. `sudo secure-usb lock` before unplugging.
 - **Logs:** `journalctl -u raspi-deploy -f`, `docker logs -f jellyfin`.
 
 ## What's in git vs. on the Pi
@@ -58,5 +58,4 @@ Back up `DATA_ROOT` separately. Secrets go in `.env`, never in git.
 | Homepage    | `http://<pi-host>`               | Dashboard linking to everything below |
 | Jellyfin    | `http://<pi-host>:8096`          | Movies, shows, music from `MEDIA_ROOT` |
 | Pi-hole     | `http://<pi-host>:8081/admin`    | DNS ad blocking on port 53. Admin password = `PIHOLE_PASSWORD` in `.env` |
-| Nextcloud   | `http://<pi-host>:8082`      | Files on the encrypted USB (`/mnt/secure`). Needs `NEXTCLOUD_ADMIN_PASSWORD` and `NEXTCLOUD_DB_PASSWORD` in `.env` |
 | Calibre-Web | `http://<pi-host>:8083`          | Library in `MEDIA_ROOT/Calibre`. Copy books into `MEDIA_ROOT/BookDrop` to import them (files there are deleted after import). First login `admin` / `admin123` — change it. |
