@@ -9,6 +9,13 @@
         description: Movies, shows & music
         siteMonitor: http://host.docker.internal:8096
 
+- Cloud:
+    - Nextcloud:
+        icon: nextcloud.png
+        href: http://{{HOMEPAGE_VAR_PI_HOST}}:8082
+        description: Files & photos (encrypted USB)
+        siteMonitor: http://host.docker.internal:8082
+
 - Network:
     - Pi-hole:
         icon: pi-hole.png

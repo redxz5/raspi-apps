@@ -97,6 +97,12 @@ pre_hook() {
 
 failed=()
 for app in "${desired[@]}"; do
+  # Apps on encrypted storage wait until it's unlocked (see secure-usb.sh).
+  req="$REPO_DIR/apps/$app/requires-mount"
+  if [[ -f "$req" ]] && ! mountpoint -q "$(head -n1 "$req")"; then
+    log "skipping $app: $(head -n1 "$req") is locked (run: sudo secure-usb unlock)"
+    continue
+  fi
   log "deploying $app"
   if ! { pre_hook "$app" &&
          compose "$app" pull --quiet &&

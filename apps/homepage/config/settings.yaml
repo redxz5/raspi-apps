@@ -9,6 +9,9 @@ layout:
   Media:
     style: row
     columns: 3
+  Cloud:
+    style: row
+    columns: 3
   Network:
     style: row
     columns: 3

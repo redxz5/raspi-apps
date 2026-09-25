@@ -1,0 +1,54 @@
+# Everything (files, database, config with secrets) lives on the encrypted
+# USB at /mnt/secure. deploy.sh skips this app until `sudo secure-usb unlock`.
+services:
+  nextcloud:
+    # Major version pinned; upgrade one major at a time (35 -> 36 -> ...).
+    image: nextcloud:35-apache
+    container_name: nextcloud
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD=${NEXTCLOUD_DB_PASSWORD:?set NEXTCLOUD_DB_PASSWORD in .env}
+      - REDIS_HOST=redis
+      # First start only: creates the admin account and finishes install.
+      - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER:-admin}
+      - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD:?set NEXTCLOUD_ADMIN_PASSWORD in .env}
+      - NEXTCLOUD_TRUSTED_DOMAINS=${PI_HOST} localhost
+      - PHP_UPLOAD_LIMIT=10G
+      - TZ=${TZ}
+    volumes:
+      - /mnt/secure/nextcloud/html:/var/www/html
+
+  # Runs Nextcloud's background jobs every 5 minutes.
+  cron:
+    image: nextcloud:35-apache
+    container_name: nextcloud-cron
+    restart: unless-stopped
+    entrypoint: /cron.sh
+    depends_on:
+      - nextcloud
+    volumes:
+      - /mnt/secure/nextcloud/html:/var/www/html
+
+  db:
+    image: postgres:17-alpine
+    container_name: nextcloud-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD=${NEXTCLOUD_DB_PASSWORD:?set NEXTCLOUD_DB_PASSWORD in .env}
+    volumes:
+      - /mnt/secure/nextcloud/db:/var/lib/postgresql/data
+
+  redis:
+    image: redis:8-alpine
+    container_name: nextcloud-redis
+    restart: unless-stopped
