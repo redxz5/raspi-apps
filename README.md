@@ -17,7 +17,7 @@ systemd/                     timers: every 5 min + weekly image refresh
 
 ```sh
 sudo apt install -y git
-sudo git clone <repo-url> /opt/raspi
+sudo git clone https://github.com/redxz5/raspi-apps.git /opt/raspi
 sudo bash /opt/raspi/scripts/bootstrap.sh
 ```
 
@@ -27,7 +27,7 @@ Then edit `/opt/raspi/.env` (set `MEDIA_ROOT` to your media drive) and run
 If the repo is private, the Pi needs read access: add a
 [deploy key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/managing-deploy-keys)
 for root (`sudo ssh-keygen -t ed25519`, add `/root/.ssh/id_ed25519.pub` to the repo)
-and clone with the `git@github.com:...` URL instead.
+and clone with `git@github.com:redxz5/raspi-apps.git` instead.
 
 ## Day to day
 
