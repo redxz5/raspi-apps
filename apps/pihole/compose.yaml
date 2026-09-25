@@ -1,0 +1,19 @@
+services:
+  pihole:
+    # Pi-hole uses date-based releases; bump this tag to upgrade.
+    image: pihole/pihole:2026.09.0
+    container_name: pihole
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8081:80/tcp"  # admin UI at http://<pi>:8081/admin (80 is the dashboard)
+    environment:
+      - TZ=${TZ}
+      # Admin password lives in .env; refuse to start without one.
+      - FTLCONF_webserver_api_password=${PIHOLE_PASSWORD:?set PIHOLE_PASSWORD in .env}
+      # Answer queries arriving via Tailscale/LAN, not just the Docker subnet.
+      - FTLCONF_dns_listeningMode=all
+      - FTLCONF_dns_upstreams=1.1.1.1;9.9.9.9
+    volumes:
+      - ${DATA_ROOT}/pihole/etc-pihole:/etc/pihole

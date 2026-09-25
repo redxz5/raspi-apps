@@ -1,0 +1,13 @@
+- resources:
+    label: Pi
+    cpu: true
+    memory: true
+    disk: /
+    cputemp: true
+    uptime: true
+
+- datetime:
+    text_size: md
+    format:
+      dateStyle: medium
+      timeStyle: short

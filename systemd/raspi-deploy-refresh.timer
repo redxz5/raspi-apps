@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly image refresh for raspi apps
+
+[Timer]
+OnCalendar=Sun 04:00
+Persistent=true
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=timers.target

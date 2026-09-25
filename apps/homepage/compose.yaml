@@ -1,0 +1,20 @@
+services:
+  homepage:
+    image: gethomepage/homepage:v2.4
+    container_name: homepage
+    restart: unless-stopped
+    ports:
+      - "80:3000"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      # Only reachable over LAN/Tailscale; accept any hostname.
+      - HOMEPAGE_ALLOWED_HOSTS=*
+      # Used for tile links in services.yaml; set by pre-deploy.sh.
+      - HOMEPAGE_VAR_PI_HOST=${PI_HOST}
+    extra_hosts:
+      # Lets status checks reach the other apps via their host ports.
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # Populated from ./config by pre-deploy.sh, so the repo checkout stays clean.
+      - ${DATA_ROOT}/homepage/config:/app/config

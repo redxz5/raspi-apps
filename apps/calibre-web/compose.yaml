@@ -1,0 +1,19 @@
+services:
+  calibre-web:
+    # Calibre-Web Automated: Calibre-Web plus auto-import. Creates the library
+    # itself and imports anything dropped into BookDrop.
+    image: crocodilestick/calibre-web-automated:v4.0.6
+    container_name: calibre-web
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${DATA_ROOT}/calibre-web/config:/config
+      - ${MEDIA_ROOT}/Calibre:/calibre-library
+      # Files dropped here are imported into the library and then DELETED
+      # from this folder. Copy books in; don't point it at your only copy.
+      - ${MEDIA_ROOT}/BookDrop:/cwa-book-ingest

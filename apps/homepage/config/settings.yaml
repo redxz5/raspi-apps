@@ -1,0 +1,17 @@
+title: Home
+theme: dark
+color: slate
+headerStyle: clean
+statusStyle: dot
+hideVersion: true
+
+layout:
+  Media:
+    style: row
+    columns: 3
+  Network:
+    style: row
+    columns: 3
+  Books:
+    style: row
+    columns: 3

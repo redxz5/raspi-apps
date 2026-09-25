@@ -1,0 +1,24 @@
+# Dashboard tiles. Add a tile here when adding an app under apps/.
+# href: link opened from your device (via Tailscale).
+# siteMonitor: health check from inside the Pi (shows up/down on the tile).
+
+- Media:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: http://{{HOMEPAGE_VAR_PI_HOST}}:8096
+        description: Movies, shows & music
+        siteMonitor: http://host.docker.internal:8096
+
+- Network:
+    - Pi-hole:
+        icon: pi-hole.png
+        href: http://{{HOMEPAGE_VAR_PI_HOST}}:8081/admin
+        description: Network-wide ad blocking
+        siteMonitor: http://host.docker.internal:8081/admin
+
+- Books:
+    - Calibre-Web:
+        icon: calibre-web.png
+        href: http://{{HOMEPAGE_VAR_PI_HOST}}:8083
+        description: Book library
+        siteMonitor: http://host.docker.internal:8083

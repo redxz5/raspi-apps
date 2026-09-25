@@ -1,0 +1,17 @@
+services:
+  jellyfin:
+    # Pinned to a minor version: patch releases are picked up on redeploy,
+    # minor/major upgrades happen by changing this tag in git.
+    image: jellyfin/jellyfin:12.1
+    container_name: jellyfin
+    user: "${PUID}:${PGID}"
+    restart: unless-stopped
+    ports:
+      - "8096:8096"      # web UI / API
+      - "7359:7359/udp"  # client auto-discovery on LAN
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${DATA_ROOT}/jellyfin/config:/config
+      - ${DATA_ROOT}/jellyfin/cache:/cache
+      - ${MEDIA_ROOT}:/media:ro
